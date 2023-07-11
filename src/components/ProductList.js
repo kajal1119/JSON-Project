@@ -7,8 +7,7 @@ export const ProductList = () => {
     useEffect(() => {
         fetch("http://localhost:3001/products")
         .then(response => response.json())
-        .then(data => console.log(setProducts(data)));
-        
+        .then(data => console.log(data));
     }, []);
 
   return (
