@@ -2,15 +2,36 @@ import { useEffect, useState } from "react"
 
 export const ProductList = () => {
     const [products, setProducts] = useState([]);
-    console.log(products);
+    const [url,setUrl]=useState("http://localhost:3001/products");
+    const [counter,setCounter]=useState(0)
+    // console.log(products);
     
     useEffect(() => {
-        fetch("http://localhost:3001/products")
+        fetch(url)
         .then(response => response.json())
-        .then(data => console.log(data));
-    }, []);
+        .then(data => setProducts(data));
+    }, [url]);
+    useEffect(()=>{
+      console.log(counter)
+    },[counter])
 
   return (
-    <div>ProductList</div>
+    <section>
+    <div className="filter">
+    <button onClick={()=> setCounter(counter + 1)}>{counter}</button>
+    <button onClick={()=>setUrl("http://localhost:3001/products")}>All</button>
+    <button onClick={()=>setUrl("http://localhost:3001/products?in_stock=true")}>In Stock Only</button>
+    </div>
+    {products.map((product)=>(
+      <div className="card" key={product.id}>
+      <p className="id">{product.id}</p>
+      <p className="name">{product.name}</p>
+      <p className="info">
+      <span>${product.price}</span>
+      <span className={product.in_stock ? "instock" : "unavailable"}>{product.in_stock ? "In Stock" : "unavailable"}</span>
+      </p>
+    </div>
+    ))}
+    </section>
   )
 }
